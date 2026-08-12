@@ -17,11 +17,9 @@
   width: 100%;
   max-width: 100%;
   height: 100dvh;
+  min-height: 100vh;
   overflow: hidden;
   pointer-events: none;
-  /* スクロール中の再描画をレイヤー単位に閉じる */
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }
 
 .bgVideo {
@@ -31,14 +29,25 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  /* 動画デコードを別コンポジタ層へ */
-  transform: translateZ(0);
+  background: color-mix(in srgb, var(--color-mint) 28%, #d5ddd9);
 }
 
 @media (max-width: 899px) {
+  /*
+   * iOS Safari：祖先・動画への transform 合成が黒画面の原因になりやすい
+   */
+  .stickyVisual {
+    transform: none;
+    backface-visibility: visible;
+    -webkit-transform: none;
+    -webkit-backface-visibility: visible;
+  }
+
   .bgVideo {
     /* 室内側をメインに。カーテンは左端に少しだけ */
     object-position: 78% center;
+    transform: none;
+    -webkit-transform: none;
   }
 }
 

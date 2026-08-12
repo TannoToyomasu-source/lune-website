@@ -104,14 +104,47 @@ export function Top({ newsPosts }: TopProps) {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
     if (reducedMotion) {
       video.pause();
       video.currentTime = 0;
       return;
     }
-    void video.play().catch(() => {
-      /* autoplay ブロック時は静止のまま */
-    });
+
+    /* iOS Safari：属性と muted を明示してから再生 */
+    video.muted = true;
+    video.defaultMuted = true;
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+
+    const tryPlay = () => {
+      if (reducedMotion) return;
+      void video.play().catch(() => {
+        /* autoplay ブロック時は静止のまま */
+      });
+    };
+
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") tryPlay();
+    };
+
+    if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
+      tryPlay();
+    } else {
+      video.addEventListener("loadeddata", tryPlay, { once: true });
+      video.addEventListener("canplay", tryPlay, { once: true });
+    }
+
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("pageshow", tryPlay);
+
+    return () => {
+      video.removeEventListener("loadeddata", tryPlay);
+      video.removeEventListener("canplay", tryPlay);
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("pageshow", tryPlay);
+    };
   }, [reducedMotion]);
 
   useEffect(() => {
@@ -400,6 +433,7 @@ export function Top({ newsPosts }: TopProps) {
             ref={videoRef}
             className={styles.bgVideo}
             src="/top_wind.mp4"
+            autoPlay
             muted
             loop
             playsInline
