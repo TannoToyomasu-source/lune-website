@@ -206,6 +206,7 @@ export function Top({ newsPosts }: TopProps) {
     let conceptShown = conceptVisible;
     let concernsRevealOn = concernsActive;
     let reasonsRevealOn = reasonsActive;
+    let reasonsUnlocked = reasonsActive;
 
     const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
     const mobileStackMq = window.matchMedia("(max-width: 899px)");
@@ -223,10 +224,12 @@ export function Top({ newsPosts }: TopProps) {
         concerns.style.opacity = "1";
         concerns.style.transform = "";
         concerns.style.pointerEvents = "";
+        concerns.style.zIndex = "";
         concerns.removeAttribute("aria-hidden");
         reasons.style.opacity = "1";
         reasons.style.transform = "";
         reasons.style.pointerEvents = "";
+        reasons.style.zIndex = "";
         reasons.removeAttribute("aria-hidden");
 
         const concernsVisible = concerns.getBoundingClientRect().top < vh * 0.82;
@@ -246,10 +249,10 @@ export function Top({ newsPosts }: TopProps) {
       const range = Math.max(1, stage.offsetHeight - vh);
       const raw = Math.min(1, Math.max(0, -stageTop / range));
 
-      /* 悩みを長く見せてからゆっくり理由へ。メニューは sticky 終了後 */
+      /* 悩みを読ませてから理由へ。理由の表示時間を長めに確保 */
       let swap = 0;
-      if (raw < 0.4) swap = 0;
-      else if (raw < 0.54) swap = (raw - 0.4) / 0.14;
+      if (raw < 0.32) swap = 0;
+      else if (raw < 0.5) swap = (raw - 0.32) / 0.18;
       else swap = 1;
       swap = easeOutCubic(swap);
 
@@ -263,13 +266,17 @@ export function Top({ newsPosts }: TopProps) {
       concerns.style.opacity = String(1 - swap);
       concerns.style.transform = `translate3d(0, ${swap * -28}px, 0)`;
       concerns.style.pointerEvents = swap > 0.55 ? "none" : "auto";
+      concerns.style.zIndex = swap > 0.55 ? "0" : "2";
       concerns.setAttribute("aria-hidden", swap > 0.55 ? "true" : "false");
 
-      /* 理由：フェードが進んでから表示（スタaggerは ReasonsSection 側） */
-      const reasonsVisible = swap > 0.35;
+      /* 理由：一度表示したら区間内は維持（スタagger取りこぼし防止） */
+      if (swap > 0.22) reasonsUnlocked = true;
+      if (swap < 0.06) reasonsUnlocked = false;
+      const reasonsVisible = reasonsUnlocked || swap > 0.22;
       reasons.style.opacity = reasonsVisible ? "1" : "0";
       reasons.style.transform = "";
       reasons.style.pointerEvents = reasonsVisible ? "auto" : "none";
+      reasons.style.zIndex = reasonsVisible ? "3" : "1";
       reasons.setAttribute("aria-hidden", reasonsVisible ? "false" : "true");
       if (reasonsVisible !== reasonsRevealOn) {
         reasonsRevealOn = reasonsVisible;

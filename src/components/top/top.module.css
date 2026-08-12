@@ -439,7 +439,8 @@
   display: grid;
   height: 100%;
   box-sizing: border-box;
-  overflow: hidden;
+  /* 大画面で理由カードが切れないように */
+  overflow: visible;
 }
 
 .atmosphereLayer {
@@ -459,10 +460,12 @@
 
 .atmosphereConcerns {
   opacity: 1;
+  z-index: 2;
 }
 
 .atmosphereReasons {
   opacity: 0;
+  z-index: 1;
 }
 
 /* 理由のあとに続くカード群：下から滑らかに被さる */

@@ -25,7 +25,7 @@ const CONCERNS = [
     id: "back",
     title: "腰痛・疲れやすさ",
     body: "慢性的な腰の重さや身体のだるさがある",
-    image: "/problem_3.svg",
+    image: "/problem_4.svg",
   },
   {
     id: "maternity",
@@ -37,7 +37,7 @@ const CONCERNS = [
         身体の負担が気になる
       </>
     ),
-    image: "/problem_4.svg",
+    image: "/problem_3.svg",
   },
   {
     id: "postpartum",
@@ -66,7 +66,7 @@ export function ConcernsSection({ active = false }: ConcernsSectionProps) {
   return (
     <div
       className={[
-        styles.root,
+        styles.shell,
         styles.compact,
         active ? styles.active : "",
       ]
@@ -75,6 +75,7 @@ export function ConcernsSection({ active = false }: ConcernsSectionProps) {
     >
       <div className={styles.wash} aria-hidden="true" />
 
+      <div className={styles.root}>
       <SectionHeading
         className={`${styles.header} ${styles.stagger}`}
         eyebrow="FOR EVERY WOMAN"
@@ -122,6 +123,7 @@ export function ConcernsSection({ active = false }: ConcernsSectionProps) {
           </li>
         ))}
       </ul>
+      </div>
     </div>
   );
 }

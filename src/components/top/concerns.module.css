@@ -1,3 +1,8 @@
+.shell {
+  position: relative;
+  width: 100%;
+}
+
 .root {
   position: relative;
   z-index: 1;
@@ -9,14 +14,15 @@
   padding: 0 clamp(1.25rem, 4vw, 2.5rem) clamp(2.5rem, 6vh, 4rem);
 }
 
-.compact {
+.compact .root {
   padding-bottom: clamp(1rem, 3vh, 2rem);
 }
 
 .wash {
   position: absolute;
   inset: -20% 0 auto;
-  height: 70%;
+  height: max(70%, 100%);
+  min-height: 100%;
   pointer-events: none;
   background:
     radial-gradient(
@@ -149,7 +155,7 @@
     padding: 0 clamp(1rem, 4vw, 1.5rem) clamp(1rem, 3vh, 1.75rem);
   }
 
-  .compact {
+  .compact .root {
     padding-bottom: 0.75rem;
   }
 

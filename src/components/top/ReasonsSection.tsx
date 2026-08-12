@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Typography } from "@/components/ui/Typography";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import styles from "./reasons.module.css";
@@ -56,12 +57,18 @@ type ReasonsSectionProps = {
  * TOP：選ばれる理由（active 時に見出し→項目を順に表示）
  */
 export function ReasonsSection({ active = false }: ReasonsSectionProps) {
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    if (active) setRevealed(true);
+  }, [active]);
+
   return (
     <div
       className={[
         styles.root,
         styles.compact,
-        active ? styles.active : "",
+        active || revealed ? styles.active : "",
       ]
         .filter(Boolean)
         .join(" ")}

@@ -87,7 +87,7 @@
 }
 
 .active .stagger {
-  animation: reasonStaggerIn 0.75s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation: reasonStaggerIn 0.75s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 .active .header.stagger {
@@ -99,6 +99,10 @@
 }
 
 @keyframes reasonStaggerIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
   to {
     opacity: 1;
     transform: translateY(0);
