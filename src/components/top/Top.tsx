@@ -213,6 +213,7 @@ export function Top({ newsPosts }: TopProps) {
 
     const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
     const mobileStackMq = window.matchMedia("(max-width: 899px)");
+    const isMobileStack = () => reducedMotion || mobileStackMq.matches;
 
     const updateAtmosphereSwap = () => {
       const stage = atmosphereStageRef.current;
@@ -222,8 +223,8 @@ export function Top({ newsPosts }: TopProps) {
 
       const vh = window.innerHeight;
 
-      /* SP / 減モーション：縦積みで全文を見せ、出現時にスタagger */
-      if (reducedMotion || mobileStackMq.matches) {
+      /* SP / 減モーション：縦積み。出現は IntersectionObserver 側で扱う */
+      if (isMobileStack()) {
         concerns.style.opacity = "1";
         concerns.style.transform = "";
         concerns.style.pointerEvents = "";
@@ -234,17 +235,6 @@ export function Top({ newsPosts }: TopProps) {
         reasons.style.pointerEvents = "";
         reasons.style.zIndex = "";
         reasons.removeAttribute("aria-hidden");
-
-        const concernsVisible = concerns.getBoundingClientRect().top < vh * 0.82;
-        const reasonsVisible = reasons.getBoundingClientRect().top < vh * 0.82;
-        if (concernsVisible !== concernsRevealOn) {
-          concernsRevealOn = concernsVisible;
-          setConcernsActive(concernsVisible);
-        }
-        if (reasonsVisible !== reasonsRevealOn) {
-          reasonsRevealOn = reasonsVisible;
-          setReasonsActive(reasonsVisible);
-        }
         return;
       }
 
@@ -290,6 +280,7 @@ export function Top({ newsPosts }: TopProps) {
     const update = () => {
       const vh = window.innerHeight;
       const concept = conceptRef.current;
+      const mobile = isMobileStack();
 
       if (!conceptShown && introUnlockedRef.current && concept) {
         const conceptTop = concept.getBoundingClientRect().top;
@@ -299,7 +290,8 @@ export function Top({ newsPosts }: TopProps) {
         }
       }
 
-      updateAtmosphereSwap();
+      /* PC のみクロスフェード計算。SP は IO に任せてメインスレッド負荷を下げる */
+      if (!mobile) updateAtmosphereSwap();
 
       /* イントロ中はヘッダー／Scroll をタイマー制御に任せる */
       if (!introUnlockedRef.current) return;
@@ -346,6 +338,39 @@ export function Top({ newsPosts }: TopProps) {
       rafId = requestAnimationFrame(update);
     };
 
+    const observers: IntersectionObserver[] = [];
+
+    if (isMobileStack()) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            const visible = entry.isIntersecting;
+            if (entry.target === conceptRef.current && visible && !conceptShown) {
+              conceptShown = true;
+              setConceptVisible(true);
+            }
+            if (entry.target === concernsLayerRef.current && visible !== concernsRevealOn) {
+              concernsRevealOn = visible;
+              setConcernsActive(visible);
+            }
+            if (entry.target === reasonsLayerRef.current && visible !== reasonsRevealOn) {
+              reasonsRevealOn = visible;
+              setReasonsActive(visible);
+            }
+          }
+        },
+        { root: null, rootMargin: "0px 0px -18% 0px", threshold: 0.08 },
+      );
+
+      if (conceptRef.current) io.observe(conceptRef.current);
+      if (concernsLayerRef.current) io.observe(concernsLayerRef.current);
+      if (reasonsLayerRef.current) io.observe(reasonsLayerRef.current);
+      observers.push(io);
+
+      /* レイヤーの初期スタイルだけ整える */
+      updateAtmosphereSwap();
+    }
+
     update();
     window.addEventListener("scroll", onScrollOrResize, { passive: true });
     window.addEventListener("resize", onScrollOrResize);
@@ -354,6 +379,7 @@ export function Top({ newsPosts }: TopProps) {
       cancelAnimationFrame(rafId);
       window.removeEventListener("scroll", onScrollOrResize);
       window.removeEventListener("resize", onScrollOrResize);
+      observers.forEach((observer) => observer.disconnect());
     };
     // 初期値のみ参照。以降はローカル変数で差分管理する
     // eslint-disable-next-line react-hooks/exhaustive-deps -- scroll ループの再生成を避ける

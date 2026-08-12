@@ -156,6 +156,10 @@
     font-size: 0.68rem;
     line-height: 1.65;
   }
+
+  .iconImage {
+    filter: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

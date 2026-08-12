@@ -36,9 +36,21 @@
 }
 
 @media (max-width: 899px) {
+  /*
+   * SP：動画を sticky にすると、コンセプト以降も全画面動画が下に残り
+   * スクロール合成が重くカクつきやすい。ヒーローと一緒に流す。
+   * 再生自体は止めない。
+   */
+  .stickyVisual {
+    position: relative;
+    transform: none;
+    backface-visibility: visible;
+  }
+
   .bgVideo {
     /* 室内側をメインに。カーテンは左端に少しだけ */
     object-position: 78% center;
+    transform: none;
   }
 }
 
@@ -52,8 +64,15 @@
 
 .hero,
 .concept {
-  /* 動画が透けるよう、ここまでは塗りなし */
+  /* PC：動画が透けるよう、ここまでは塗りなし */
   background: transparent;
+}
+
+@media (max-width: 899px) {
+  .concept {
+    /* SP：動画はヒーローと一緒に流れるため、下地を塗る */
+    background: color-mix(in srgb, var(--color-mint) 22%, #e8eeeb);
+  }
 }
 
 /* ---------- Panels ---------- */
@@ -505,6 +524,10 @@
     right: 0;
     bottom: 0;
     left: 0;
+    /* mask + 透過グラデは SP で描画コストが高いので単純化 */
+    background: color-mix(in srgb, var(--color-mint-soft) 72%, #f3f5f2);
+    mask-image: none;
+    -webkit-mask-image: none;
   }
 
   .atmosphereInner {
@@ -733,6 +756,14 @@
     height: 72px;
   }
 
+  .scrollDown::after {
+    /* 無限アニメは SP の合成負荷になりやすい */
+    animation: none;
+    transform: translateX(-50%) scaleY(0.7);
+    transform-origin: top center;
+    opacity: 0.85;
+  }
+
   .hero {
     align-items: flex-start;
     padding-top: clamp(5.5rem, 14vh, 7.5rem);
@@ -784,6 +815,15 @@
 
   .conceptMediaRight {
     transform: translateY(clamp(0.5rem, 1.5vw, 1rem));
+  }
+
+  .conceptMediaAsset {
+    filter: none;
+    transition: opacity 1.1s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .conceptMediaVisible .conceptMediaAsset {
+    filter: none;
   }
 
   .conceptInner {

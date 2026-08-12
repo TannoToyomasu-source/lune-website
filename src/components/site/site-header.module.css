@@ -366,6 +366,18 @@
   .header {
     display: none;
   }
+
+  /* 動画上の backdrop-filter は SP スクロールで重い */
+  .mobileHeader:not(.headerSolid)::before {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 253, 249, 0.78) 0%,
+      rgba(255, 253, 249, 0.42) 58%,
+      transparent 100%
+    );
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
