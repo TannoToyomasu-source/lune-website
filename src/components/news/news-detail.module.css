@@ -1,0 +1,139 @@
+.page {
+  background: #f9f6f1;
+  color: #4f4a45;
+  min-height: 100dvh;
+}
+
+.article {
+  width: min(100%, 44rem);
+  margin: 0 auto;
+  padding:
+    clamp(6.5rem, 14vh, 8.5rem)
+    clamp(1.25rem, 5vw, 2rem)
+    clamp(4rem, 10vh, 6rem);
+}
+
+.meta {
+  margin: 0 0 1.75rem;
+}
+
+.date {
+  display: block;
+  margin: 0 0 0.75rem;
+  color: var(--color-mint-deep);
+  letter-spacing: 0.14em;
+}
+
+.title {
+  margin: 0;
+  color: #4f4a45;
+  font-size: clamp(1.45rem, 2.6vw, 1.95rem);
+  letter-spacing: 0.08em;
+  line-height: 1.55;
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 0.45rem;
+  background: color-mix(in srgb, var(--color-mint) 22%, #e4ebe9);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #efeae3;
+}
+
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--color-mint-deep);
+  letter-spacing: 0.2em;
+  font-size: 0.82rem;
+}
+
+.navBtn {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  transform: translateY(-50%);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, #fff 78%, transparent);
+  color: #4f4a45;
+  font-size: 1.35rem;
+  line-height: 1;
+  box-shadow: 0 4px 14px rgba(79, 74, 69, 0.08);
+}
+
+.navPrev {
+  left: 0.75rem;
+}
+
+.navNext {
+  right: 0.75rem;
+}
+
+.navBtn:hover,
+.navBtn:focus-visible {
+  background: #fff;
+}
+
+.dots {
+  position: absolute;
+  left: 50%;
+  bottom: 0.85rem;
+  z-index: 2;
+  display: flex;
+  gap: 0.35rem;
+  transform: translateX(-50%);
+}
+
+.dot,
+.dotActive {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, #fff 55%, transparent);
+}
+
+.dotActive {
+  background: #fff;
+}
+
+.body {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.25rem;
+  color: #67615c;
+  line-height: 2;
+}
+
+.instagramLink {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.back {
+  margin-top: 2.5rem;
+}
+
+.backLink {
+  color: var(--color-ink);
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+}
+
+.backLink:hover,
+.backLink:focus-visible {
+  color: var(--color-ink-soft);
+}

@@ -1,0 +1,77 @@
+.footer {
+  position: relative;
+  z-index: 2;
+  padding: 2.75rem clamp(1.25rem, 5vw, 4rem) 2.2rem;
+  background: var(--color-ivory);
+  border-top: 1px solid rgba(216, 183, 122, 0.18);
+  color: var(--color-ink-soft);
+}
+
+.inner {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem 2rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: min(100%, 28rem);
+  color: var(--color-ink);
+}
+
+.brandName {
+  line-height: 1.55;
+}
+
+.brand img {
+  width: auto;
+  height: 2.75rem;
+  display: block;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.65rem;
+}
+
+.navSep {
+  color: rgba(122, 108, 92, 0.45);
+  user-select: none;
+}
+
+.navTextButton {
+  color: var(--color-ink-soft);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+}
+
+.navTextButton:hover,
+.navTextButton:focus-visible {
+  color: var(--color-ink);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem 1.35rem;
+  margin-left: auto;
+}
+
+.copy {
+  margin: 0;
+  color: var(--color-ink-mute);
+  white-space: nowrap;
+}

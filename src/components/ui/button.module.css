@@ -1,0 +1,125 @@
+.button {
+  --btn-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-family: var(--font-shippori), "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease,
+    opacity 0.35s ease,
+    box-shadow 0.4s ease;
+}
+
+.button:focus-visible {
+  outline: 2px solid #c7a45f;
+  outline-offset: 3px;
+}
+
+.button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.label {
+  position: relative;
+  display: inline-block;
+}
+
+/* ---------- fill ---------- */
+
+.fill {
+  min-height: 2.7rem;
+  padding: 0.72rem 1.85rem;
+  border: 1px solid #c7a45f;
+  border-radius: 999px;
+  background: #c7a45f;
+  color: #f9f6f1;
+  box-shadow: 0 8px 22px rgba(184, 146, 82, 0.16);
+}
+
+.fill:hover:not(:disabled) {
+  background: #b89252;
+  border-color: #b89252;
+  box-shadow: 0 10px 26px rgba(184, 146, 82, 0.2);
+}
+
+.fill:focus-visible {
+  outline-color: #b89252;
+}
+
+/* ---------- stroke ---------- */
+
+.stroke {
+  min-height: 2.7rem;
+  padding: 0.72rem 1.85rem;
+  border: 1px solid #c7a45f;
+  border-radius: 999px;
+  background: transparent;
+  color: #b89252;
+}
+
+.stroke:hover:not(:disabled) {
+  background: rgba(216, 183, 122, 0.1);
+  border-color: #b89252;
+  color: #9a7a42;
+}
+
+/* ---------- text（ホバーで右から下線） ---------- */
+
+.text {
+  min-height: auto;
+  padding: 0.2rem 0 0.55rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-ink, #4f4a45);
+}
+
+.text:hover:not(:disabled),
+.text:focus-visible {
+  color: var(--color-ink, #4f4a45);
+}
+
+.text .label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.42em;
+  height: 1px;
+  background: var(--color-gold, #c7a45f);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.5s var(--btn-ease);
+}
+
+.text:hover:not(:disabled) .label::after,
+.text:focus-visible .label::after {
+  transform: scaleX(1);
+  transform-origin: right center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .text .label::after {
+    transition: none;
+  }
+
+  .text:hover:not(:disabled) .label::after,
+  .text:focus-visible .label::after {
+    transform: scaleX(1);
+  }
+}

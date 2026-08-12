@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+:root {
+  /* ---- Colors ---- */
+  /* ミント系は #BBD6D2 を基軸に統一 */
+  --color-mint: #bbd6d2;
+  --color-mint-soft: #d9e8e5;
+  --color-mint-deep: #7fa9a3;
+  --color-mint-deeper: #5e8f88;
+  --color-main: #bbd6d2;
+  --color-bg: #f8f6f2;
+  --color-text: #5b534c;
+  --color-text-soft: rgba(91, 83, 76, 0.72);
+  --color-line: #bbd6d2;
+
+  --color-ivory: #f9f6f1;
+  --color-ivory-soft: #f3efe8;
+  --color-gold: #d8b77a;
+  --color-gold-deep: #b89252;
+  --color-gold-soft: #eedfbf;
+  --color-ink: #4f4a45;
+  --color-ink-soft: #756f69;
+  --color-ink-mute: #a29c96;
+  --color-moon: #c9ddd9;
+  --color-moon-soft: rgba(187, 214, 210, 0.28);
+  --color-cta-from: #a8cdc7;
+  --color-cta-to: #6b9a93;
+  --color-cta-hover-from: #8fbab3;
+  --color-cta-hover-to: #547f78;
+
+  /* ---- Font families ---- */
+  /* 見出し・Hero・短いコピー: Shippori / 本文・Q&A: Zen Old Mincho / 英字: Cormorant */
+  --font-heading-ja: var(--font-shippori), "Yu Mincho", "Hiragino Mincho ProN",
+    serif;
+
+  --font-body-ja: var(--font-zen-old-mincho), "Yu Mincho",
+    "Hiragino Mincho ProN", serif;
+
+  --font-heading-en: var(--font-cormorant), "Times New Roman", serif;
+
+  /* 後方互換（既存 CSS Modules） */
+  --font-display: var(--font-shippori), "Yu Mincho", "Hiragino Mincho ProN",
+    serif;
+  --font-body: var(--font-zen-old-mincho), "Yu Mincho", "Hiragino Mincho ProN",
+    serif;
+
+  /* ---- Font sizes ---- */
+  --text-display: clamp(2.375rem, 4.3vw, 4rem);
+  --text-page-title: clamp(2.125rem, 3.3vw, 3rem);
+  --text-section-title: clamp(1.625rem, 2.2vw, 2rem);
+  --text-heading: clamp(1.3125rem, 1.7vw, 1.5rem);
+  --text-subheading: clamp(1.0625rem, 1.3vw, 1.125rem);
+  --text-lead: clamp(1rem, 1.3vw, 1.125rem);
+  --text-body: clamp(0.9375rem, 1vw, 1rem);
+  --text-small: clamp(0.8125rem, 0.9vw, 0.875rem);
+  --text-caption: 0.75rem;
+
+  /* ---- Line heights ---- */
+  --leading-display: 1.65;
+  --leading-page-title: 1.45;
+  --leading-heading: 1.65;
+  --leading-lead: 2.2;
+  --leading-body: 2;
+  --leading-small: 1.8;
+
+  /* ---- Letter spacing ---- */
+  --tracking-display: 0.08em;
+  --tracking-heading: 0.06em;
+  --tracking-body: 0.04em;
+  --tracking-label: 0.16em;
+  --tracking-en-label: 0.12em;
+
+  /* ---- Font weights ---- */
+  --weight-regular: 400;
+  --weight-medium: 500;
+
+  /* ---- Spacing / radius / motion ---- */
+  --space-section-y: clamp(4.75rem, 11vh, 8rem);
+  --space-page-x: clamp(1.4rem, 6vw, 5.5rem);
+  --radius-media: 2px;
+  --shadow-soft: 0 10px 28px rgba(79, 74, 69, 0.035);
+  --motion-reveal: 1.05s;
+  --motion-moon: 12.5s;
+}
+
+@theme inline {
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-text);
+  --font-sans: var(--font-body-ja);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-zen-old-mincho), "Yu Mincho", "Hiragino Mincho ProN",
+    serif;
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(169, 211, 204, 0.35);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 右矢印アイコン（currentColor） */
+.arrowRight {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.15em;
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

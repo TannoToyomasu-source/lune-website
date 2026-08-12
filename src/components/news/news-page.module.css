@@ -1,0 +1,48 @@
+.page {
+  background: #f9f6f1;
+  color: #4f4a45;
+  min-height: 100dvh;
+}
+
+.inner {
+  width: min(100%, 48rem);
+  margin: 0 auto;
+  padding:
+    clamp(6.5rem, 14vh, 8.5rem)
+    clamp(1.25rem, 5vw, 2rem)
+    clamp(4rem, 10vh, 6rem);
+}
+
+.header {
+  margin-bottom: clamp(2rem, 5vh, 3rem);
+}
+
+.list {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.comingSoonFrame {
+  position: relative;
+  width: 100%;
+  min-height: 16rem;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-mint-soft) 55%, #eeeae3);
+}
+
+.comingSoon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, #f9f6f1 38%, transparent);
+  color: #b89252;
+  font-family: var(--font-josefin), "Josefin Sans", sans-serif;
+  font-size: clamp(0.95rem, 2vw, 1.25rem);
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}

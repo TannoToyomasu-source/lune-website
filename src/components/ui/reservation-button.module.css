@@ -1,0 +1,332 @@
+.wrap {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.trigger {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.withHours {
+  align-items: center;
+  gap: 1.55rem;
+}
+
+.headerWrap {
+  flex-shrink: 1;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 2.75rem;
+  padding: 0.7rem 1.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-gold);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.outline {
+  background: transparent;
+  color: var(--color-ink-soft);
+}
+
+.filled {
+  border-color: #c7a45f;
+  color: var(--color-ink-soft);
+  background: linear-gradient(
+    145deg,
+    rgba(216, 183, 122, 0.12) 0%,
+    rgba(232, 209, 154, 0.22) 42%,
+    rgba(199, 164, 95, 0.16) 100%
+  );
+  box-shadow: 0 8px 22px rgba(184, 146, 82, 0.1);
+}
+
+.mint {
+  border-color: transparent;
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    var(--color-cta-from) 0%,
+    var(--color-cta-to) 100%
+  );
+  box-shadow: 0 8px 22px rgba(126, 169, 163, 0.22);
+}
+
+.header {
+  min-height: 2.2rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid #c7a45f;
+  color: var(--color-ink-soft);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* カーテン動画上：透け感のある fill */
+.headerFill {
+  background: linear-gradient(
+    145deg,
+    rgba(216, 183, 122, 0.12) 0%,
+    rgba(232, 209, 154, 0.22) 42%,
+    rgba(199, 164, 95, 0.16) 100%
+  );
+  box-shadow: 0 6px 16px rgba(184, 146, 82, 0.08);
+}
+
+.label {
+  display: inline-block;
+}
+
+.arrow {
+  display: inline-block;
+  width: 1.05em;
+  height: 1.05em;
+  color: inherit;
+  transition: transform 0.4s ease;
+}
+
+.button:hover {
+  background: rgba(216, 183, 122, 0.1);
+  color: var(--color-ink);
+  border-color: #c7a45f;
+}
+
+.filled:hover {
+  border-color: #c7a45f;
+  color: var(--color-ink);
+  background: linear-gradient(
+    145deg,
+    rgba(216, 183, 122, 0.18) 0%,
+    rgba(232, 209, 154, 0.3) 42%,
+    rgba(199, 164, 95, 0.22) 100%
+  );
+  box-shadow: 0 10px 26px rgba(184, 146, 82, 0.14);
+}
+
+.mint:hover {
+  background: linear-gradient(
+    135deg,
+    var(--color-cta-hover-from) 0%,
+    var(--color-cta-hover-to) 100%
+  );
+  color: #fff;
+  border-color: transparent;
+}
+
+.header:hover {
+  border-color: #c7a45f;
+  color: var(--color-ink);
+  background: rgba(216, 183, 122, 0.1);
+  box-shadow: none;
+}
+
+.headerFill:hover {
+  background: linear-gradient(
+    145deg,
+    rgba(216, 183, 122, 0.18) 0%,
+    rgba(232, 209, 154, 0.3) 42%,
+    rgba(199, 164, 95, 0.22) 100%
+  );
+  box-shadow: 0 8px 20px rgba(184, 146, 82, 0.12);
+}
+
+.open .arrow,
+.button:hover .arrow {
+  transform: translateX(4px);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  left: 50%;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  min-width: min(11.5rem, 100%);
+  width: max-content;
+  max-width: min(18.5rem, calc(100vw - 2rem));
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 35%, transparent);
+  background: color-mix(in srgb, var(--color-ivory) 55%, white);
+  box-shadow: 0 12px 32px rgba(79, 74, 69, 0.08);
+  transform: translateX(-50%) translateY(4px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease,
+    visibility 0.28s ease;
+}
+
+/* ボタンとメニューの隙間でもホバーが切れないように */
+.menu::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -0.65rem;
+  height: 0.65rem;
+}
+
+.open .menu,
+.trigger:hover .menu,
+.trigger:focus-within .menu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.wrap:has(.header) .menu {
+  left: auto;
+  right: 0;
+  transform: translateY(4px);
+}
+
+.wrap:has(.header).open .menu,
+.wrap:has(.header) .trigger:hover .menu,
+.wrap:has(.header) .trigger:focus-within .menu {
+  transform: translateY(0);
+}
+
+.withHours .trigger {
+  width: auto;
+}
+
+.menuPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: 100%;
+  min-height: 2.4rem;
+  padding: 0.45rem 1.15rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-gold);
+  background: transparent;
+  color: var(--color-ink-soft);
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.menuPrimary:hover,
+.menuPrimary:focus-visible {
+  background: rgba(216, 183, 122, 0.1);
+  color: var(--color-ink);
+  border-color: #c7a45f;
+}
+
+.menuPrimary:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+.menuItem {
+  width: 100%;
+  justify-content: center;
+  padding: 0.35rem 0 0.15rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: var(--color-ink-soft);
+}
+
+.menuItem:hover,
+.menuItem:focus-visible {
+  color: var(--color-ink);
+}
+
+.tone_mint .menuItem {
+  color: var(--color-ink-soft);
+}
+
+.tone_mint .menuItem:hover,
+.tone_mint .menuItem:focus-visible {
+  color: var(--color-ink);
+}
+
+@media (max-width: 899px) {
+  .button {
+    min-height: 2.75rem;
+    padding: 0.75rem 1.35rem;
+  }
+
+  .header {
+    min-height: 2.2rem;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+  }
+
+  .wrap:has(.button:not(.header)) {
+    width: 100%;
+  }
+
+  .button:not(.header) {
+    width: 100%;
+  }
+
+  .wrap:has(.button:not(.header)) .menu {
+    left: 0;
+    right: 0;
+    width: auto;
+    transform: translateY(4px);
+  }
+
+  .wrap:has(.button:not(.header)).open .menu,
+  .wrap:has(.button:not(.header)) .trigger:hover .menu,
+  .wrap:has(.button:not(.header)) .trigger:focus-within .menu {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu,
+  .arrow,
+  .button {
+    transition: none;
+  }
+
+  .open .arrow,
+  .button:hover .arrow {
+    transform: none;
+  }
+}

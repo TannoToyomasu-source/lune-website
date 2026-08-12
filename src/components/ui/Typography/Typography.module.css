@@ -1,0 +1,99 @@
+.base {
+  margin: 0;
+  color: inherit;
+}
+
+/* 見出し・Hero・短いコピー: Shippori Mincho */
+.display {
+  font-family: var(--font-shippori), "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: var(--text-display);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+}
+
+.pageTitle {
+  font-family: var(--font-shippori), "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: var(--text-page-title);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-page-title);
+  letter-spacing: var(--tracking-heading);
+}
+
+.sectionTitle {
+  font-family: var(--font-shippori), "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: var(--text-section-title);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
+}
+
+.heading {
+  font-family: var(--font-shippori), "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: var(--text-heading);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
+}
+
+.subheading {
+  font-family: var(--font-shippori), "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
+}
+
+.lead {
+  font-family: var(--font-shippori), "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: var(--text-lead);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-lead);
+  letter-spacing: 0.08em;
+}
+
+/* 本文・Q&A・説明文: Zen Old Mincho */
+.body {
+  font-family: var(--font-zen-old-mincho), "Yu Mincho", "Hiragino Mincho ProN",
+    serif;
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-body);
+}
+
+.small {
+  font-family: var(--font-zen-old-mincho), "Yu Mincho", "Hiragino Mincho ProN",
+    serif;
+  font-size: var(--text-small);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-small);
+  letter-spacing: var(--tracking-body);
+}
+
+.caption {
+  font-family: var(--font-zen-old-mincho), "Yu Mincho", "Hiragino Mincho ProN",
+    serif;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-regular);
+  line-height: 1.7;
+  letter-spacing: 0.06em;
+}
+
+.label {
+  font-family: var(--font-zen-old-mincho), "Yu Mincho", "Hiragino Mincho ProN",
+    serif;
+  font-size: var(--text-small);
+  font-weight: var(--weight-regular);
+  line-height: 1.4;
+  letter-spacing: var(--tracking-label);
+}
+
+/* 英字ラベル: Cormorant Garamond */
+.enLabel {
+  font-family: var(--font-cormorant), "Times New Roman", serif;
+  font-size: var(--text-small);
+  font-weight: var(--weight-regular);
+  line-height: 1.2;
+  letter-spacing: var(--tracking-en-label);
+}

@@ -1,0 +1,193 @@
+.root {
+  position: relative;
+  z-index: 2;
+  background: #f9f6f1;
+  color: #4f4a45;
+  border-top: 1px solid color-mix(in srgb, #b89252 16%, transparent);
+}
+
+.inner {
+  width: min(100%, 72rem);
+  margin: 0 auto;
+  padding:
+    clamp(3.5rem, 9vh, 5.5rem)
+    clamp(1.25rem, 4vw, 2.5rem)
+    clamp(3.25rem, 8vh, 5rem);
+}
+
+.header {
+  margin-bottom: clamp(2.25rem, 5.5vh, 3.5rem);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr);
+  gap: clamp(2rem, 4vw, 3.25rem) clamp(1.75rem, 3.5vw, 3rem);
+  align-items: start;
+}
+
+.colLeft {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.35rem, 1vh, 0.65rem);
+  min-width: 0;
+}
+
+.colRight {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.35rem, 3vh, 2rem);
+  min-width: 0;
+}
+
+.storeInfo {
+  min-width: 0;
+}
+
+.storeName {
+  margin: 0 0 0.85rem;
+  color: #4f4a45;
+  font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+  letter-spacing: 0.06em;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.address {
+  margin: 0;
+  font-style: normal;
+}
+
+.addressLine {
+  margin: 0;
+  color: #67615c;
+  line-height: 1.8;
+  letter-spacing: 0.03em;
+}
+
+.phone {
+  margin: 0.85rem 0 0;
+  color: #67615c;
+  line-height: 1.75;
+  letter-spacing: 0.04em;
+}
+
+.phoneLink {
+  color: inherit;
+  text-decoration: none;
+  letter-spacing: 0.06em;
+}
+
+.phoneLink:hover,
+.phoneLink:focus-visible {
+  color: #4f4a45;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.mapBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.85rem;
+}
+
+.mapButton {
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  min-height: 2.45rem;
+  padding: 0.55rem 1.35rem;
+}
+
+.mapButtonArrow {
+  width: 1em;
+  height: 1em;
+  margin-left: 0.35em;
+}
+
+.mapEmbed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-mint-soft) 55%, #e8e4dc);
+}
+
+/* iframe 内の店舗カードは操作できないため、左上を枠外へずらして隠す */
+.mapFrame {
+  position: absolute;
+  top: -12px;
+  left: -360px;
+  display: block;
+  width: calc(100% + 720px);
+  height: calc(100% + 24px);
+  border: 0;
+}
+
+.parkingMap {
+  margin: 0;
+  width: 100%;
+}
+
+.parkingImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  background: color-mix(in srgb, var(--color-mint-soft) 35%, #f4f0ea);
+}
+
+.parkingPlaceholder {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: color-mix(in srgb, #d9d4cb 70%, #eeeae3);
+  color: #8a837c;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+}
+
+.parkingCopy {
+  max-width: 28rem;
+}
+
+.parkingTitle {
+  margin: 0 0 0.75rem;
+  color: #4f4a45;
+  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+  letter-spacing: 0.08em;
+  font-weight: 500;
+}
+
+.parkingBody {
+  margin: 0;
+  color: #67615c;
+  line-height: 1.9;
+  letter-spacing: 0.03em;
+}
+
+.parkingParagraph {
+  display: block;
+}
+
+.parkingParagraph + .parkingParagraph {
+  margin-top: 0.85em;
+}
+
+@media (max-width: 899px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 5vh, 2.75rem);
+  }
+
+  .mapBlock {
+    align-items: flex-start;
+  }
+
+  /* 駐車場地図を店舗情報の直後に見せる */
+  .colRight {
+    order: 0;
+  }
+}

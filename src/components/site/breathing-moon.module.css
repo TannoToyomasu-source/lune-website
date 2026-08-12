@@ -1,0 +1,64 @@
+.wrap {
+  position: relative;
+  width: min(45vw, 680px);
+  aspect-ratio: 1;
+  pointer-events: none;
+  --light-x: 48%;
+  --light-y: 44%;
+}
+
+.orb {
+  position: absolute;
+  inset: 0;
+  transform: scale(0.975);
+  opacity: 0.82;
+}
+
+/* TOP .orbGlow と同じ濃淡・ぼかし。当たり位置だけ --light-x / y で変える */
+.lit {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at var(--light-x) var(--light-y),
+    rgba(187, 214, 210, 0.68) 0%,
+    rgba(187, 214, 210, 0.25) 42%,
+    rgba(249, 246, 241, 0) 74%
+  );
+  filter: blur(2px);
+}
+
+.breathe {
+  animation: breatheOrb 9s ease-in-out infinite;
+}
+
+.still {
+  opacity: 0.82;
+  transform: scale(1);
+}
+
+@keyframes breatheOrb {
+  0%,
+  100% {
+    transform: scale(0.975);
+    opacity: 0.82;
+  }
+  50% {
+    transform: scale(1.025);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 899px) {
+  .wrap {
+    width: min(72vw, 420px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .breathe {
+    animation: none !important;
+    opacity: 0.82;
+    transform: scale(1);
+  }
+}

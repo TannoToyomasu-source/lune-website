@@ -1,0 +1,242 @@
+.root {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 72rem);
+  margin: 0 auto;
+  padding:
+    0
+    clamp(1.25rem, 4vw, 2.5rem)
+    clamp(2.5rem, 6vh, 4rem);
+}
+
+.root::before {
+  content: "";
+  position: absolute;
+  inset: -8% 8% auto;
+  height: 45%;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 55% 70% at 50% 20%,
+      color-mix(in srgb, var(--color-mint) 12%, transparent),
+      transparent 72%
+    );
+  opacity: 0.4;
+}
+
+.header {
+  position: relative;
+  margin-bottom: clamp(1.75rem, 4vh, 2.75rem);
+}
+
+.header > p:last-of-type {
+  font-size: clamp(0.78rem, 1.1vw, 0.875rem);
+  line-height: 1.85;
+}
+
+.grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.85rem, 1.8vw, 1.35rem);
+  width: min(100%, 52rem);
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+/* 1件のときは中央カラムに配置 */
+.gridSingle .tile {
+  grid-column: 2;
+}
+
+.tile {
+  min-width: 0;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-mint-soft) 55%, #eeeae3);
+}
+
+.tileLink {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tile:hover .image,
+.tileLink:focus-visible .image {
+  transform: scale(1.04);
+}
+
+.imagePlaceholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #8a837c;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  background: color-mix(in srgb, #fff 70%, var(--color-mint-soft));
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.85rem;
+  background: color-mix(in srgb, #3d3833 42%, transparent);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  text-align: center;
+}
+
+.tile:hover .overlay,
+.tileLink:focus-visible .overlay {
+  opacity: 1;
+}
+
+.overlayDate {
+  font-family: var(--font-cormorant), "Times New Roman", serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  opacity: 0.9;
+}
+
+.overlayTitle {
+  font-family: var(--font-shippori), "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: clamp(0.72rem, 1.1vw, 0.85rem);
+  letter-spacing: 0.06em;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.comingSoonFrame {
+  position: relative;
+  width: min(100%, 52rem);
+  margin: 0 auto;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-mint-soft) 55%, #eeeae3);
+}
+
+.comingSoon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, #f9f6f1 38%, transparent);
+  color: #b89252;
+  font-family: var(--font-josefin), "Josefin Sans", sans-serif;
+  font-size: clamp(0.95rem, 2vw, 1.25rem);
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(1.75rem, 4vh, 2.5rem);
+}
+
+.moreButton {
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+}
+
+.moreButton > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.moreArrow {
+  width: 0.95em;
+  height: 0.95em;
+  color: inherit;
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.moreButton:hover .moreArrow,
+.moreButton:focus-visible .moreArrow {
+  transform: translateX(3px);
+}
+
+@media (max-width: 899px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(100%, 28rem);
+    gap: clamp(0.75rem, 2.5vw, 1.1rem);
+  }
+
+  .gridSingle .tile {
+    grid-column: 1 / -1;
+    width: calc((100% - clamp(0.75rem, 2.5vw, 1.1rem)) / 2);
+    justify-self: center;
+  }
+}
+
+@media (max-width: 719px) {
+  .grid {
+    gap: 0.7rem;
+  }
+
+  .overlay {
+    opacity: 1;
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, #3d3833 72%, transparent) 0%,
+      transparent 58%
+    );
+    align-items: flex-start;
+    justify-content: flex-end;
+    text-align: left;
+    padding: 0.7rem;
+  }
+
+  .overlayTitle {
+    -webkit-line-clamp: 2;
+    font-size: 0.72rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image {
+    transition: none;
+  }
+
+  .tile:hover .image,
+  .tileLink:focus-visible .image {
+    transform: none;
+  }
+
+  .moreArrow {
+    transition: none;
+  }
+
+  .moreButton:hover .moreArrow,
+  .moreButton:focus-visible .moreArrow {
+    transform: none;
+  }
+}

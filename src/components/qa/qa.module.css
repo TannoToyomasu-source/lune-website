@@ -1,0 +1,300 @@
+.page {
+  --ease-luxe: cubic-bezier(0.22, 0.61, 0.36, 1);
+  position: relative;
+  background: #f9f6f1;
+  color: #4f4a45;
+  overflow: clip;
+}
+
+/* ---------- Reveal ---------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 1.05s var(--ease-luxe),
+    transform 1.05s var(--ease-luxe);
+}
+
+.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: min(52dvh, 480px);
+  padding:
+    clamp(6.5rem, 14vh, 9rem)
+    clamp(1.5rem, 7vw, 6rem)
+    clamp(2.5rem, 6vh, 4rem);
+  text-align: center;
+}
+
+.heroCopy {
+  max-width: 36rem;
+}
+
+.eyebrow {
+  margin: 0 0 1rem;
+  letter-spacing: 0.28em;
+  color: #b89252;
+}
+
+.title {
+  margin: 0;
+  color: #4f4a45;
+  letter-spacing: 0.14em;
+  font-size: clamp(1.55rem, 2.8vw, 2.15rem);
+}
+
+.heroRule {
+  display: block;
+  width: 2.75rem;
+  height: 1px;
+  margin: 1.25rem auto 0;
+  background: #c7a45f;
+  opacity: 0.85;
+}
+
+.lead {
+  margin: 1.45rem 0 0;
+  color: #67615c;
+  line-height: 1.95;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- Sections ---------- */
+
+.section {
+  position: relative;
+  z-index: 2;
+  padding:
+    clamp(2.5rem, 6vh, 4rem)
+    clamp(1.5rem, 7vw, 6rem);
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.faq {
+  padding-top: clamp(1rem, 3vh, 2rem);
+}
+
+.faqWrap {
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+.faqPanel {
+  overflow: hidden;
+}
+
+.categoryBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem 0.15rem;
+  margin-bottom: clamp(1.75rem, 4vh, 2.5rem);
+  padding: 0 0 0.35rem;
+}
+
+.categoryTab {
+  position: relative;
+  min-height: 44px;
+  padding: 0.55rem 0.95rem;
+  color: #756f69;
+  border-radius: 0;
+  letter-spacing: 0.1em;
+  transition: color 0.35s ease;
+}
+
+.categoryTab:hover,
+.categoryTab:focus-visible {
+  color: #4f4a45;
+}
+
+.categoryTab:focus-visible {
+  outline: 2px solid color-mix(in srgb, #c7a45f 55%, transparent);
+  outline-offset: 3px;
+}
+
+.categoryTabActive {
+  color: #4f4a45;
+}
+
+.categoryTabActive::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0.4rem;
+  width: 1.35rem;
+  height: 1px;
+  transform: translateX(-50%);
+  background: #b89252;
+}
+
+.faqList {
+  padding: 0;
+  background: transparent;
+}
+
+.faqEmpty {
+  margin: 0;
+  padding: 2rem 1rem;
+  text-align: center;
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
+  color: #67615c;
+}
+
+/* ---------- Cancellation ---------- */
+
+.policy {
+  padding-top: clamp(2.5rem, 6vh, 4rem);
+  scroll-margin-top: 120px;
+  background: color-mix(in srgb, var(--color-mint-soft) 70%, #f9f6f1);
+}
+
+.policyInner {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vh, 2.5rem) 0;
+  text-align: center;
+}
+
+.policyHeading {
+  margin-bottom: 0;
+}
+
+.policyBody {
+  margin-top: 1.85rem;
+  display: grid;
+  gap: 1.15rem;
+  color: #67615c;
+  text-align: left;
+}
+
+.policyFee {
+  margin-top: 0.4rem;
+  color: #4f4a45;
+}
+
+/* ---------- CTA ---------- */
+
+.cta {
+  position: relative;
+  z-index: 2;
+  padding:
+    clamp(4rem, 10vh, 6.5rem)
+    clamp(1.5rem, 7vw, 6rem);
+}
+
+.ctaInner {
+  max-width: 28rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.75rem;
+}
+
+.ctaMain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.ctaLead {
+  color: #4f4a45;
+  line-height: 1.95;
+}
+
+.ctaAction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.55rem;
+}
+
+@media (min-width: 900px) {
+  .ctaInner {
+    max-width: 54rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) auto;
+    align-items: center;
+    justify-items: start;
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    text-align: left;
+  }
+
+  .ctaMain {
+    align-items: flex-start;
+    width: 100%;
+    gap: 0;
+  }
+
+  .ctaLead {
+    text-align: left;
+  }
+
+  .ctaAction {
+    align-items: flex-start;
+    justify-self: end;
+  }
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 719px) {
+  .hero {
+    min-height: auto;
+    padding-bottom: 2.5rem;
+  }
+
+  .categoryBar {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 0.55rem;
+  }
+
+  .categoryBar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .categoryTab {
+    flex-shrink: 0;
+    white-space: nowrap;
+    font-size: 0.74rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

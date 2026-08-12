@@ -1,0 +1,195 @@
+.root {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 72rem);
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem) clamp(2.5rem, 6vh, 4rem);
+}
+
+.compact {
+  padding-bottom: clamp(1rem, 3vh, 2rem);
+}
+
+.wash {
+  position: absolute;
+  inset: -20% 0 auto;
+  height: 70%;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 42% 70% at 0% 40%,
+      rgba(255, 255, 255, 0.22),
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 35% 50% at 88% 18%,
+      color-mix(in srgb, var(--color-mint) 10%, transparent),
+      transparent 70%
+    );
+}
+
+.header {
+  position: relative;
+  max-width: 36rem;
+  margin-bottom: clamp(2rem, 5vh, 3.25rem);
+}
+
+.compact .header {
+  margin-bottom: clamp(1.5rem, 4vh, 2.5rem);
+}
+
+.grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(1rem, 2.2vw, 1.75rem);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: 0;
+}
+
+.iconWrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(6.25rem, 11vw, 8rem);
+  aspect-ratio: 4 / 5;
+  margin-bottom: 1.05rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  overflow: visible;
+}
+
+/* 選ばれる理由のPNG楕円に近い、白い縦長オーバル */
+.iconPlate {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 88%;
+  height: 100%;
+  border-radius: 50%;
+  background: #f8f4f0;
+  filter: drop-shadow(0 10px 18px rgba(79, 74, 69, 0.18));
+}
+
+.icon {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: auto;
+  height: 58%;
+  max-width: 52%;
+  object-fit: contain;
+}
+
+.itemTitle {
+  margin: 0 0 0.55rem;
+  color: #4f4a45;
+  font-size: clamp(0.78rem, 1.15vw, 0.92rem);
+  line-height: 1.55;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.itemBody {
+  margin: 0;
+  color: #67615c;
+  font-size: clamp(0.68rem, 1vw, 0.78rem);
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+}
+
+.stagger {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.active .stagger {
+  animation: concernStaggerIn 0.75s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+.active .header.stagger {
+  animation-delay: 0.05s;
+}
+
+.active .item.stagger {
+  animation-delay: calc(0.22s + var(--stagger, 0) * 0.11s);
+}
+
+@keyframes concernStaggerIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1099px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.75rem, 4vh, 2.5rem) clamp(1.25rem, 3vw, 2rem);
+  }
+}
+
+@media (max-width: 699px) {
+  .root {
+    padding: 0 clamp(1rem, 4vw, 1.5rem) clamp(1rem, 3vh, 1.75rem);
+  }
+
+  .compact {
+    padding-bottom: 0.75rem;
+  }
+
+  .compact .header {
+    margin-bottom: clamp(1.1rem, 3vh, 1.75rem);
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.35rem 1rem;
+  }
+
+  .iconWrap {
+    width: clamp(4.5rem, 22vw, 5.75rem);
+    margin-bottom: 0.7rem;
+  }
+
+  .icon {
+    height: 56%;
+    max-width: 50%;
+  }
+
+  .itemTitle {
+    font-size: 0.78rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .itemBody {
+    font-size: 0.68rem;
+    line-height: 1.65;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stagger {
+    opacity: 1;
+    transform: none;
+  }
+
+  .active .stagger {
+    animation: none;
+  }
+}

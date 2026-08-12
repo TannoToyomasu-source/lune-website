@@ -1,0 +1,167 @@
+.page {
+  --ease-luxe: cubic-bezier(0.22, 0.61, 0.36, 1);
+  position: relative;
+  background: #f9f6f1;
+  color: #4f4a45;
+  overflow: clip;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 1.05s var(--ease-luxe),
+    transform 1.05s var(--ease-luxe);
+}
+
+.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: min(46dvh, 420px);
+  padding:
+    clamp(6.5rem, 14vh, 9rem)
+    clamp(1.5rem, 7vw, 6rem)
+    clamp(2.25rem, 5vh, 3.5rem);
+  text-align: center;
+}
+
+.heroCopy {
+  max-width: 40rem;
+}
+
+.eyebrow {
+  margin: 0 0 1rem;
+  letter-spacing: 0.28em;
+  color: #b89252;
+}
+
+.title {
+  margin: 0;
+  color: #4f4a45;
+  letter-spacing: 0.14em;
+  font-size: clamp(1.55rem, 2.8vw, 2.15rem);
+}
+
+.heroRule {
+  display: block;
+  width: 2.75rem;
+  height: 1px;
+  margin: 1.25rem auto 0;
+  background: #c7a45f;
+  opacity: 0.85;
+}
+
+.lead {
+  margin: 1.45rem 0 0;
+  color: #67615c;
+  line-height: 1.95;
+  letter-spacing: 0.04em;
+  font-size: clamp(0.88rem, 1.3vw, 0.98rem);
+  text-align: left;
+}
+
+.body {
+  position: relative;
+  z-index: 2;
+  padding:
+    0
+    clamp(1.5rem, 7vw, 6rem)
+    clamp(4rem, 10vh, 6.5rem);
+}
+
+.inner {
+  width: min(100%, 42rem);
+  margin: 0 auto;
+  display: grid;
+  gap: clamp(1.75rem, 4vh, 2.5rem);
+}
+
+.block {
+  scroll-margin-top: 6rem;
+}
+
+.blockTitle {
+  margin: 0 0 0.95rem;
+  color: #4f4a45;
+  font-size: clamp(0.98rem, 1.4vw, 1.08rem);
+  letter-spacing: 0.06em;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.paragraph {
+  margin: 0 0 0.85rem;
+  color: #67615c;
+  line-height: 1.95;
+  letter-spacing: 0.03em;
+}
+
+.paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.list {
+  margin: 0.35rem 0 0;
+  padding: 0 0 0 1.15rem;
+  color: #67615c;
+  line-height: 1.95;
+  letter-spacing: 0.03em;
+  font-size: clamp(0.78rem, 1.1vw, 0.88rem);
+}
+
+.list li + li {
+  margin-top: 0.35rem;
+}
+
+.contact {
+  margin-top: clamp(0.5rem, 2vh, 1rem);
+  padding-top: clamp(1.75rem, 4vh, 2.5rem);
+  border-top: 1px solid color-mix(in srgb, #b89252 22%, transparent);
+}
+
+.address {
+  margin: 1.15rem 0 0;
+  font-style: normal;
+}
+
+.clinicName {
+  margin: 0 0 0.75rem;
+  color: #4f4a45;
+  font-size: clamp(1rem, 1.5vw, 1.12rem);
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+
+.addressLine {
+  margin: 0;
+  color: #67615c;
+  line-height: 1.85;
+  letter-spacing: 0.03em;
+}
+
+.link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.link:hover,
+.link:focus-visible {
+  color: #4f4a45;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

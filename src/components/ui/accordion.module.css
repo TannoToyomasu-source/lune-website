@@ -1,0 +1,128 @@
+.list {
+  display: grid;
+  gap: 0;
+}
+
+.item {
+  border-top: 1px solid color-mix(in srgb, #c7a45f 22%, transparent);
+  background: transparent;
+  transition: background 0.4s ease;
+}
+
+.item:last-child {
+  border-bottom: 1px solid color-mix(in srgb, #c7a45f 22%, transparent);
+}
+
+.item:hover {
+  background: color-mix(in srgb, var(--color-mint) 12%, transparent);
+}
+
+.question {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+  min-height: 44px;
+  padding: 1.35rem 0.35rem 1.35rem 0;
+  text-align: left;
+  color: #4f4a45;
+  transition: color 0.35s ease;
+}
+
+.question:focus-visible {
+  outline: 2px solid color-mix(in srgb, #c7a45f 55%, transparent);
+  outline-offset: 3px;
+}
+
+.questionText {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.question .questionText {
+  font-size: clamp(0.9rem, 1.2vw, 0.98rem);
+  font-weight: 400;
+  line-height: 1.85;
+  letter-spacing: 0.06em;
+}
+
+.qMark {
+  flex-shrink: 0;
+  font-family: var(--font-heading-en), "Times New Roman", serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: #b89252;
+  line-height: 1.85;
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 1.35rem;
+  margin-top: 0.15rem;
+  text-align: center;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: #b89252;
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+.answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition:
+    grid-template-rows 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.45s ease;
+  opacity: 0;
+}
+
+.itemOpen .answer {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.answerInner {
+  overflow: hidden;
+}
+
+.answerText {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  padding: 0 1.7rem 1.45rem 0;
+  color: #67615c;
+  font-size: clamp(0.84rem, 1.1vw, 0.92rem);
+  line-height: 2;
+  letter-spacing: 0.04em;
+}
+
+.aMark {
+  font-family: var(--font-heading-en), "Times New Roman", serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: #b89252;
+  line-height: 2;
+}
+
+@media (max-width: 719px) {
+  .question {
+    padding: 1.15rem 0.15rem 1.15rem 0;
+    gap: 0.9rem;
+  }
+
+  .answerText {
+    padding: 0 0.15rem 1.2rem 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item,
+  .question,
+  .answer {
+    transition: none;
+  }
+}

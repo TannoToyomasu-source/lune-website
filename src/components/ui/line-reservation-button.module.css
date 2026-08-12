@@ -1,0 +1,83 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 2.75rem;
+  padding: 0.7rem 1.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-gold);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-decoration: none;
+  transition:
+    background 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.outline {
+  background: transparent;
+  color: var(--color-gold-deep);
+}
+
+.filled {
+  background: rgba(216, 183, 122, 0.16);
+  color: var(--color-gold-deep);
+  border-color: var(--color-gold);
+}
+
+.mint {
+  border-color: transparent;
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    var(--color-cta-from) 0%,
+    var(--color-cta-to) 100%
+  );
+  box-shadow: 0 8px 22px rgba(126, 169, 163, 0.22);
+}
+
+.label {
+  display: inline-block;
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.4s ease;
+}
+
+.button:hover {
+  background: rgba(216, 183, 122, 0.1);
+  color: #9a7a42;
+  border-color: #c9a66a;
+}
+
+.mint:hover {
+  background: linear-gradient(
+    135deg,
+    var(--color-cta-hover-from) 0%,
+    var(--color-cta-hover-to) 100%
+  );
+  color: #fff;
+  border-color: transparent;
+}
+
+.button:hover .arrow {
+  transform: translateX(4px);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+@media (max-width: 899px) {
+  .button {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    padding: 0.75rem 1.35rem;
+  }
+}
