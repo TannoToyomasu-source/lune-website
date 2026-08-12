@@ -111,41 +111,63 @@ export function Top({ newsPosts }: TopProps) {
       return;
     }
 
-    /* iOS Safari：属性と muted を明示してから再生 */
-    video.muted = true;
-    video.defaultMuted = true;
-    video.setAttribute("muted", "");
-    video.setAttribute("playsinline", "");
-    video.setAttribute("webkit-playsinline", "");
+    const prepareVideo = () => {
+      video.muted = true;
+      video.defaultMuted = true;
+      video.playsInline = true;
+      video.controls = false;
+      video.setAttribute("muted", "");
+      video.setAttribute("playsinline", "");
+      video.setAttribute("webkit-playsinline", "");
+      video.removeAttribute("controls");
+    };
+
+    prepareVideo();
 
     const tryPlay = () => {
       if (reducedMotion) return;
+      prepareVideo();
       void video.play().catch(() => {
-        /* autoplay ブロック時は静止のまま */
+        /* autoplay ブロック時はユーザー操作で再試行 */
       });
     };
+
+    const onUserGesture = () => tryPlay();
 
     const onVisibility = () => {
       if (document.visibilityState === "visible") tryPlay();
     };
 
-    if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
-      tryPlay();
-    } else {
-      video.addEventListener("loadeddata", tryPlay, { once: true });
-      video.addEventListener("canplay", tryPlay, { once: true });
-    }
+    tryPlay();
+
+    video.addEventListener("loadeddata", tryPlay, { once: true });
+    video.addEventListener("canplay", tryPlay, { once: true });
 
     document.addEventListener("visibilitychange", onVisibility);
     window.addEventListener("pageshow", tryPlay);
+    /* touchstart は intro 中の touchmove ブロックより先に届く */
+    document.addEventListener("touchstart", onUserGesture, {
+      passive: true,
+    });
+    document.addEventListener("click", onUserGesture, { passive: true });
 
     return () => {
       video.removeEventListener("loadeddata", tryPlay);
       video.removeEventListener("canplay", tryPlay);
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("pageshow", tryPlay);
+      document.removeEventListener("touchstart", onUserGesture);
+      document.removeEventListener("click", onUserGesture);
     };
   }, [reducedMotion]);
+
+  /* イントロ解禁後にも再生を再試行（iOS で初回 autoplay が落ちる場合） */
+  useEffect(() => {
+    if (!introUnlocked || reducedMotion) return;
+    const video = videoRef.current;
+    if (!video) return;
+    void video.play().catch(() => {});
+  }, [introUnlocked, reducedMotion]);
 
   useEffect(() => {
     const skipIntro = () => {
@@ -432,14 +454,18 @@ export function Top({ newsPosts }: TopProps) {
           <video
             ref={videoRef}
             className={styles.bgVideo}
-            src="/top_wind.mp4"
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
+            controls={false}
+            disablePictureInPicture
+            disableRemotePlayback
             aria-hidden="true"
-          />
+          >
+            <source src="/top_wind.mp4" type="video/mp4" />
+          </video>
         </div>
 
         <div className={styles.scrollContent}>
