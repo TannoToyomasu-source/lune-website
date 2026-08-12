@@ -383,8 +383,8 @@
 /* お悩み→選ばれる理由：同じ位置でスクロールに合わせてクロスフェード */
 .atmosphereStage {
   position: relative;
-  /* 悩み・理由をそれぞれしっかり読めるよう、sticky 区間を長めに取る */
-  height: 400vh;
+  /* 悩み・理由を読める長さを保ちつつ、やや短めに */
+  height: 340vh;
 }
 
 .atmosphere {
@@ -536,20 +536,20 @@
   .atmosphereInner {
     display: flex;
     flex-direction: column;
-    gap: clamp(5.5rem, 16vh, 9rem);
+    gap: clamp(4.25rem, 12vh, 7rem);
     height: auto;
     overflow: visible;
     padding:
-      clamp(3.25rem, 8vh, 4.75rem)
+      clamp(2.75rem, 7vh, 4.25rem)
       0
-      clamp(4.5rem, 12vh, 7rem);
+      clamp(3.5rem, 10vh, 6rem);
   }
 
   .atmosphereLayer {
     grid-area: auto;
     align-items: flex-start;
     justify-content: center;
-    min-height: 92dvh;
+    min-height: 78dvh;
     padding: 0;
     opacity: 1 !important;
     transform: none !important;
