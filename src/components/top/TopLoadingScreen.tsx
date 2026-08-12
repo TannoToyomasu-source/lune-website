@@ -8,7 +8,7 @@ type TopLoadingScreenProps = {
 };
 
 /**
- * TOP 初回表示：ミントの月光とロゴで、動画準備までの間をやわらかく見せる
+ * TOP 初回表示：ミントの月光で、動画準備までの間をやわらかく見せる
  */
 export function TopLoadingScreen({
   phase,
@@ -33,14 +33,7 @@ export function TopLoadingScreen({
           reducedMotion={reducedMotion}
           className={styles.moon}
         />
-        <img
-          src="/brand/Logo.png"
-          alt=""
-          width={160}
-          height={48}
-          decoding="async"
-          className={styles.logo}
-        />
+        <p className={styles.copy}>For Every Woman</p>
         <span className={styles.rule} aria-hidden="true" />
       </div>
     </div>

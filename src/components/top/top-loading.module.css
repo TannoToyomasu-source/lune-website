@@ -30,7 +30,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(1.15rem, 3.8vh, 1.85rem);
+  gap: clamp(1rem, 2.6vh, 1.6rem);
   transform: translateY(0);
   transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
@@ -40,20 +40,21 @@
 }
 
 .moon {
-  width: min(38vw, 176px) !important;
+  width: min(32vw, 300px) !important;
 }
 
-.logo {
-  display: block;
-  height: clamp(2rem, 5.2vw, 2.65rem);
-  width: auto;
-  object-fit: contain;
-  opacity: 0.9;
+.copy {
+  margin: 0;
+  color: #716961;
+  font-family: var(--font-cormorant), "Times New Roman", serif;
+  font-size: clamp(1rem, 1.65vw, 1.35rem);
+  letter-spacing: 0.14em;
+  opacity: 0.78;
 }
 
 .rule {
   display: block;
-  width: 2.25rem;
+  width: 3.4rem;
   height: 1px;
   background: linear-gradient(
     90deg,
@@ -88,5 +89,20 @@
   .screen,
   .inner {
     transition: none !important;
+  }
+}
+
+@media (max-width: 899px) {
+  .moon {
+    width: min(46vw, 220px) !important;
+  }
+
+  .copy {
+    font-size: clamp(0.88rem, 3.7vw, 1.06rem);
+    letter-spacing: 0.1em;
+  }
+
+  .rule {
+    width: 2.4rem;
   }
 }
