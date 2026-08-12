@@ -96,6 +96,8 @@ export function Top({ newsPosts }: TopProps) {
   const [introUnlocked, setIntroUnlocked] = useState(reducedMotion);
   const [concernsActive, setConcernsActive] = useState(reducedMotion);
   const [reasonsActive, setReasonsActive] = useState(reducedMotion);
+  /** 再生開始前は動画を隠し、iOS の再生ボタン一瞬表示を防ぐ */
+  const [bgVideoVisible, setBgVideoVisible] = useState(false);
 
   useEffect(() => {
     introUnlockedRef.current = introUnlocked;
@@ -108,8 +110,11 @@ export function Top({ newsPosts }: TopProps) {
     if (reducedMotion) {
       video.pause();
       video.currentTime = 0;
+      setBgVideoVisible(false);
       return;
     }
+
+    const revealVideo = () => setBgVideoVisible(true);
 
     const prepareVideo = () => {
       video.muted = true;
@@ -140,6 +145,11 @@ export function Top({ newsPosts }: TopProps) {
 
     tryPlay();
 
+    if (!video.paused && video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+      revealVideo();
+    }
+
+    video.addEventListener("playing", revealVideo);
     video.addEventListener("loadeddata", tryPlay, { once: true });
     video.addEventListener("canplay", tryPlay, { once: true });
 
@@ -152,6 +162,7 @@ export function Top({ newsPosts }: TopProps) {
     document.addEventListener("click", onUserGesture, { passive: true });
 
     return () => {
+      video.removeEventListener("playing", revealVideo);
       video.removeEventListener("loadeddata", tryPlay);
       video.removeEventListener("canplay", tryPlay);
       document.removeEventListener("visibilitychange", onVisibility);
@@ -451,9 +462,15 @@ export function Top({ newsPosts }: TopProps) {
         aria-label="イントロダクション"
       >
         <div className={styles.stickyVisual}>
+          <div className={styles.bgVideoPlaceholder} aria-hidden="true" />
           <video
             ref={videoRef}
-            className={styles.bgVideo}
+            className={[
+              styles.bgVideo,
+              bgVideoVisible ? styles.bgVideoVisible : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
             autoPlay
             muted
             loop
