@@ -8,15 +8,18 @@ import {
   INSTAGRAM_PROFILE_URL,
 } from "@/data/news";
 
+type BeholdSizes = {
+  medium?: { mediaUrl?: string };
+  large?: { mediaUrl?: string };
+  full?: { mediaUrl?: string };
+};
+
 type BeholdChild = {
   id?: string;
   mediaType?: string;
   mediaUrl?: string;
   thumbnailUrl?: string;
-  sizes?: {
-    medium?: { mediaUrl?: string };
-    large?: { mediaUrl?: string };
-  };
+  sizes?: BeholdSizes;
 };
 
 type BeholdPost = {
@@ -29,11 +32,7 @@ type BeholdPost = {
   prunedCaption?: string;
   timestamp?: string;
   children?: BeholdChild[];
-  sizes?: {
-    medium?: { mediaUrl?: string };
-    large?: { mediaUrl?: string };
-    full?: { mediaUrl?: string };
-  };
+  sizes?: BeholdSizes;
 };
 
 function getFeedUrl() {
