@@ -36,21 +36,9 @@
 }
 
 @media (max-width: 899px) {
-  /*
-   * SP：動画を sticky にすると、コンセプト以降も全画面動画が下に残り
-   * スクロール合成が重くカクつきやすい。ヒーローと一緒に流す。
-   * 再生自体は止めない。
-   */
-  .stickyVisual {
-    position: relative;
-    transform: none;
-    backface-visibility: visible;
-  }
-
   .bgVideo {
     /* 室内側をメインに。カーテンは左端に少しだけ */
     object-position: 78% center;
-    transform: none;
   }
 }
 
@@ -64,15 +52,8 @@
 
 .hero,
 .concept {
-  /* PC：動画が透けるよう、ここまでは塗りなし */
+  /* 動画が透けるよう、ここまでは塗りなし */
   background: transparent;
-}
-
-@media (max-width: 899px) {
-  .concept {
-    /* SP：動画はヒーローと一緒に流れるため、下地を塗る */
-    background: color-mix(in srgb, var(--color-mint) 22%, #e8eeeb);
-  }
 }
 
 /* ---------- Panels ---------- */
@@ -524,10 +505,32 @@
     right: 0;
     bottom: 0;
     left: 0;
-    /* mask + 透過グラデは SP で描画コストが高いので単純化 */
-    background: color-mix(in srgb, var(--color-mint-soft) 72%, #f3f5f2);
-    mask-image: none;
-    -webkit-mask-image: none;
+    /* 動画が透ける半透明（backdrop-filter は使わない） */
+    background:
+      linear-gradient(
+        180deg,
+        transparent 0%,
+        color-mix(in srgb, #f9f6f1 14%, transparent) 16%,
+        color-mix(in srgb, #f9f6f1 38%, transparent) 36%,
+        color-mix(in srgb, var(--color-mint-soft) 52%, transparent) 70%,
+        color-mix(in srgb, #f3f5f2 68%, transparent) 100%
+      );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.12) 12%,
+      rgba(0, 0, 0, 0.55) 32%,
+      rgba(0, 0, 0, 0.88) 52%,
+      #000 68%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.12) 12%,
+      rgba(0, 0, 0, 0.55) 32%,
+      rgba(0, 0, 0, 0.88) 52%,
+      #000 68%
+    );
   }
 
   .atmosphereInner {
