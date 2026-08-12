@@ -207,6 +207,9 @@ export function Top({ newsPosts }: TopProps) {
     let concernsRevealOn = concernsActive;
     let reasonsRevealOn = reasonsActive;
     let reasonsUnlocked = reasonsActive;
+    let scrollHintOn = scrollHintVisible;
+    let headerSolidOn = headerSolid;
+    let headerVisibleOn = headerVisible;
 
     const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
     const mobileStackMq = window.matchMedia("(max-width: 899px)");
@@ -285,9 +288,12 @@ export function Top({ newsPosts }: TopProps) {
     };
 
     const update = () => {
-      if (!conceptShown && introUnlockedRef.current && conceptRef.current) {
-        const conceptTop = conceptRef.current.getBoundingClientRect().top;
-        if (conceptTop < window.innerHeight * 0.72) {
+      const vh = window.innerHeight;
+      const concept = conceptRef.current;
+
+      if (!conceptShown && introUnlockedRef.current && concept) {
+        const conceptTop = concept.getBoundingClientRect().top;
+        if (conceptTop < vh * 0.72) {
           conceptShown = true;
           setConceptVisible(true);
         }
@@ -299,25 +305,40 @@ export function Top({ newsPosts }: TopProps) {
       if (!introUnlockedRef.current) return;
 
       const cover = coverRef.current;
-      const concept = conceptRef.current;
       if (!cover || !concept) return;
 
       const coverTop = cover.getBoundingClientRect().top;
       const conceptTop = concept.getBoundingClientRect().top;
       const coverAtTop = coverTop <= 64;
 
-      /* ヒーローを過ぎたら SCROLL を隠す */
-      setScrollHintVisible(conceptTop > window.innerHeight * 0.55);
+      /* ヒーローを過ぎたら SCROLL を隠す（値が変わったときだけ再レンダー） */
+      const nextHint = conceptTop > vh * 0.55;
+      if (nextHint !== scrollHintOn) {
+        scrollHintOn = nextHint;
+        setScrollHintVisible(nextHint);
+      }
 
       if (coverAtTop) {
-        setHeaderVisible(true);
-        setHeaderSolid(true);
+        if (!headerVisibleOn) {
+          headerVisibleOn = true;
+          setHeaderVisible(true);
+        }
+        if (!headerSolidOn) {
+          headerSolidOn = true;
+          setHeaderSolid(true);
+        }
         return;
       }
 
       /* コンセプト・悩み・理由：追従（塗りなし） */
-      setHeaderSolid(false);
-      setHeaderVisible(true);
+      if (headerSolidOn) {
+        headerSolidOn = false;
+        setHeaderSolid(false);
+      }
+      if (!headerVisibleOn) {
+        headerVisibleOn = true;
+        setHeaderVisible(true);
+      }
     };
 
     const onScrollOrResize = () => {
@@ -334,7 +355,9 @@ export function Top({ newsPosts }: TopProps) {
       window.removeEventListener("scroll", onScrollOrResize);
       window.removeEventListener("resize", onScrollOrResize);
     };
-  }, [conceptVisible, reducedMotion]);
+    // 初期値のみ参照。以降はローカル変数で差分管理する
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- scroll ループの再生成を避ける
+  }, [reducedMotion]);
 
   return (
     <>

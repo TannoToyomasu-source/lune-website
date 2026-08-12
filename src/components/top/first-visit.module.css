@@ -426,11 +426,28 @@
   }
 
   .badge {
-    right: -0.25rem;
-    bottom: -0.35rem;
-    width: clamp(8.75rem, 38vw, 11rem);
-    height: clamp(8.75rem, 38vw, 11rem);
-    padding: 0.95rem 0.75rem;
+    right: 0;
+    bottom: -0.15rem;
+    width: clamp(9.75rem, 42vw, 11.5rem);
+    height: clamp(9.75rem, 42vw, 11.5rem);
+    padding: 0.7rem 0.65rem;
+  }
+
+  .badgeTitle {
+    font-size: clamp(0.68rem, 3.1vw, 0.78rem);
+    line-height: 1.45;
+    letter-spacing: 0.04em;
+  }
+
+  .badgeRule {
+    width: 1.6rem;
+    margin: 0.4rem 0 0.45rem;
+  }
+
+  .badgeNote {
+    font-size: clamp(0.52rem, 2.5vw, 0.6rem);
+    line-height: 1.5;
+    letter-spacing: 0.02em;
   }
 
   /* SPでは表示を優先（交差判定が外れても画像が出るように） */
