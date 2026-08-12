@@ -16,6 +16,7 @@ import { NewsSection } from "./NewsSection";
 import { ReasonsSection } from "./ReasonsSection";
 import { FirstVisitSection } from "./FirstVisitSection";
 import { AccessSection } from "./AccessSection";
+import { TopLoadingScreen } from "./TopLoadingScreen";
 import type { NewsPost } from "@/data/news";
 import styles from "./top.module.css";
 
@@ -98,6 +99,53 @@ export function Top({ newsPosts }: TopProps) {
   const [reasonsActive, setReasonsActive] = useState(reducedMotion);
   /** 再生開始前は動画を隠し、iOS の再生ボタン一瞬表示を防ぐ */
   const [bgVideoVisible, setBgVideoVisible] = useState(false);
+  const [videoLoadReady, setVideoLoadReady] = useState(false);
+  const [loaderPhase, setLoaderPhase] = useState<
+    "visible" | "hiding" | "done"
+  >("visible");
+
+  useEffect(() => {
+    if (reducedMotion) setLoaderPhase("done");
+  }, [reducedMotion]);
+
+  useEffect(() => {
+    if (loaderPhase !== "visible") return;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [loaderPhase]);
+
+  /* 動画準備と最低表示時間のあと、ローディングをフェードアウト */
+  useEffect(() => {
+    if (reducedMotion || loaderPhase !== "visible") return;
+
+    const revisit = hasSeenTopIntro();
+    const minMs = revisit ? 650 : 1300;
+    const start = Date.now();
+    let hideTimer = 0;
+
+    const hide = () => {
+      setLoaderPhase("hiding");
+      hideTimer = window.setTimeout(() => setLoaderPhase("done"), 900);
+    };
+
+    const ready = bgVideoVisible || videoLoadReady;
+
+    const tick = () => {
+      if (Date.now() - start >= minMs && ready) hide();
+    };
+
+    const interval = window.setInterval(tick, 80);
+    const maxTimer = window.setTimeout(hide, 5200);
+    tick();
+
+    return () => {
+      window.clearInterval(interval);
+      window.clearTimeout(maxTimer);
+      window.clearTimeout(hideTimer);
+    };
+  }, [reducedMotion, loaderPhase, bgVideoVisible, videoLoadReady]);
 
   useEffect(() => {
     introUnlockedRef.current = introUnlocked;
@@ -149,7 +197,10 @@ export function Top({ newsPosts }: TopProps) {
       revealVideo();
     }
 
+    const onLoaded = () => setVideoLoadReady(true);
+
     video.addEventListener("playing", revealVideo);
+    video.addEventListener("loadeddata", onLoaded, { once: true });
     video.addEventListener("loadeddata", tryPlay, { once: true });
     video.addEventListener("canplay", tryPlay, { once: true });
 
@@ -181,6 +232,8 @@ export function Top({ newsPosts }: TopProps) {
   }, [introUnlocked, reducedMotion]);
 
   useEffect(() => {
+    if (loaderPhase !== "done") return;
+
     const skipIntro = () => {
       setRunIntro(false);
       setHeaderVisible(true);
@@ -222,7 +275,7 @@ export function Top({ newsPosts }: TopProps) {
       }, INTRO_UNLOCK_MS),
     ];
     return () => timers.forEach((id) => window.clearTimeout(id));
-  }, [reducedMotion]);
+  }, [reducedMotion, loaderPhase]);
 
   /* 初回ロードのイントロ中だけ、コンセプト表示完了までスクロールを抑止 */
   useEffect(() => {
@@ -453,6 +506,7 @@ export function Top({ newsPosts }: TopProps) {
 
   return (
     <>
+      <TopLoadingScreen phase={loaderPhase} reducedMotion={reducedMotion} />
       <SiteHeader visible={headerVisible} solid={headerSolid} />
 
       <section

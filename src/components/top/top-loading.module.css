@@ -1,0 +1,92 @@
+.screen {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(
+      ellipse 72% 58% at 50% 36%,
+      color-mix(in srgb, var(--color-mint) 48%, #f9f6f1),
+      color-mix(in srgb, var(--color-mint) 24%, #d5ddd9) 68%,
+      #d5ddd9
+    );
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1),
+    visibility 0s linear 0.9s;
+}
+
+.hiding {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1.15rem, 3.8vh, 1.85rem);
+  transform: translateY(0);
+  transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.hiding .inner {
+  transform: translateY(-10px);
+}
+
+.moon {
+  width: min(38vw, 176px) !important;
+}
+
+.logo {
+  display: block;
+  height: clamp(2rem, 5.2vw, 2.65rem);
+  width: auto;
+  object-fit: contain;
+  opacity: 0.9;
+}
+
+.rule {
+  display: block;
+  width: 2.25rem;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #c7a45f 48%,
+    transparent 100%
+  );
+  transform-origin: center;
+  animation: loaderRule 2s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+}
+
+@keyframes loaderRule {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scaleX(0.55);
+  }
+
+  50% {
+    opacity: 0.95;
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rule {
+    animation: none;
+    opacity: 0.75;
+    transform: scaleX(1);
+  }
+
+  .screen,
+  .inner {
+    transition: none !important;
+  }
+}
