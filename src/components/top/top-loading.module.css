@@ -28,62 +28,73 @@
 
 .inner {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: clamp(1rem, 2.6vh, 1.6rem);
   transform: translateY(0);
   transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .hiding .inner {
-  transform: translateY(-10px);
+  transform: none;
+}
+
+.loader {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(34vw, 320px);
+  aspect-ratio: 1;
 }
 
 .moon {
-  width: min(32vw, 300px) !important;
+  width: 100% !important;
 }
 
-.copy {
-  margin: 0;
-  color: #716961;
-  font-family: var(--font-cormorant), "Times New Roman", serif;
-  font-size: clamp(1rem, 1.65vw, 1.35rem);
-  letter-spacing: 0.14em;
-  opacity: 0.78;
+.moonSpinner {
+  position: absolute;
+  width: min(26%, 82px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, #c7a45f 32%, transparent);
+  border-right-color: #c7a45f;
+  border-top-color: #d8b77a;
+  filter: drop-shadow(0 0 10px color-mix(in srgb, #c7a45f 28%, transparent));
+  animation: moonOrbit 3.4s linear infinite;
 }
 
-.rule {
-  display: block;
-  width: 3.4rem;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    #c7a45f 48%,
-    transparent 100%
-  );
-  transform-origin: center;
-  animation: loaderRule 2s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+.moonSpinner::before {
+  content: "";
+  position: absolute;
+  inset: 15%;
+  border-radius: 50%;
+  background: color-mix(in srgb, #c7a45f 78%, #f9f6f1);
+  box-shadow:
+    -6px 0 0 0 color-mix(in srgb, #f9f6f1 86%, transparent),
+    0 0 10px color-mix(in srgb, #c7a45f 34%, transparent);
 }
 
-@keyframes loaderRule {
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: scaleX(0.55);
+.moonSpinnerStill {
+  animation: none;
+}
+
+@keyframes moonOrbit {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.86;
   }
 
   50% {
-    opacity: 0.95;
-    transform: scaleX(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotate(360deg);
+    opacity: 0.86;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rule {
+  .moonSpinner {
     animation: none;
-    opacity: 0.75;
-    transform: scaleX(1);
   }
 
   .screen,
@@ -93,16 +104,7 @@
 }
 
 @media (max-width: 899px) {
-  .moon {
-    width: min(46vw, 220px) !important;
-  }
-
-  .copy {
-    font-size: clamp(0.88rem, 3.7vw, 1.06rem);
-    letter-spacing: 0.1em;
-  }
-
-  .rule {
-    width: 2.4rem;
+  .loader {
+    width: min(52vw, 240px);
   }
 }

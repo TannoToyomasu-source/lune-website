@@ -28,13 +28,21 @@ export function TopLoadingScreen({
       aria-label="読み込み中"
     >
       <div className={styles.inner}>
-        <BreathingMoon
-          phase="full"
-          reducedMotion={reducedMotion}
-          className={styles.moon}
-        />
-        <p className={styles.copy}>For Every Woman</p>
-        <span className={styles.rule} aria-hidden="true" />
+        <div className={styles.loader} aria-hidden="true">
+          <BreathingMoon
+            phase="full"
+            reducedMotion={reducedMotion}
+            className={styles.moon}
+          />
+          <span
+            className={[
+              styles.moonSpinner,
+              reducedMotion ? styles.moonSpinnerStill : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+          />
+        </div>
       </div>
     </div>
   );
