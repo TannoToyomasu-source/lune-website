@@ -23,8 +23,8 @@
   background: color-mix(in srgb, var(--color-mint) 28%, #d5ddd9);
 }
 
-/* 再生前でも動画と同じ画を見せる（iOS autoplay 待ちの無地対策） */
-.bgPoster {
+/* 動画は常時表示（iOS は非表示だと autoplay を拒否しやすい） */
+.bgVideo {
   position: absolute;
   inset: 0;
   z-index: 0;
@@ -32,17 +32,14 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
+  background: transparent;
   pointer-events: none;
-  user-select: none;
+  opacity: 1;
+  visibility: visible;
 }
 
-@media (max-width: 899px) {
-  .bgPoster {
-    object-position: 78% center;
-  }
-}
-
-.bgVideo {
+/* 再生前だけポスターを上に重ねる（見た目の固定画＋再生ボタン隠し） */
+.bgPoster {
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -50,21 +47,21 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  background: transparent;
   pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
-    visibility 0s linear 0.55s;
+  user-select: none;
+  opacity: 1;
+  transition: opacity 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-.bgVideoVisible {
-  opacity: 1;
-  visibility: visible;
-  transition:
-    opacity 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
-    visibility 0s;
+.bgPosterHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 899px) {
+  .bgPoster {
+    object-position: 78% center;
+  }
 }
 
 /* iOS：autoplay 失敗時に出る標準の再生ボタンを隠す */

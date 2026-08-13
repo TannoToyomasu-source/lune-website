@@ -97,8 +97,8 @@ export function Top({ newsPosts }: TopProps) {
   const [introUnlocked, setIntroUnlocked] = useState(reducedMotion);
   const [concernsActive, setConcernsActive] = useState(reducedMotion);
   const [reasonsActive, setReasonsActive] = useState(reducedMotion);
-  /** 再生開始前は動画を隠し、iOS の再生ボタン一瞬表示を防ぐ */
-  const [bgVideoVisible, setBgVideoVisible] = useState(false);
+  /** 動画が再生中ならポスターを外す（動画自体は常時表示＝iOS autoplay 用） */
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const [videoLoadReady, setVideoLoadReady] = useState(false);
   const [loaderPhase, setLoaderPhase] = useState<
     "visible" | "hiding" | "done"
@@ -134,7 +134,7 @@ export function Top({ newsPosts }: TopProps) {
     };
 
     const tick = () => {
-      const ready = bgVideoVisible || videoLoadReady;
+      const ready = videoPlaying || videoLoadReady;
       if (Date.now() - start >= minMs && ready) hide();
     };
 
@@ -146,7 +146,7 @@ export function Top({ newsPosts }: TopProps) {
       window.clearInterval(interval);
       window.clearTimeout(maxTimer);
     };
-  }, [reducedMotion, loaderPhase, bgVideoVisible, videoLoadReady]);
+  }, [reducedMotion, loaderPhase, videoPlaying, videoLoadReady]);
 
   /* hiding → done は別 effect（cleanup でタイマーが消えないようにする） */
   useEffect(() => {
@@ -173,11 +173,11 @@ export function Top({ newsPosts }: TopProps) {
     if (reducedMotion) {
       video.pause();
       video.currentTime = 0;
-      setBgVideoVisible(false);
+      setVideoPlaying(false);
       return;
     }
 
-    const revealVideo = () => setBgVideoVisible(true);
+    const markPlaying = () => setVideoPlaying(true);
 
     const prepareVideo = () => {
       video.muted = true;
@@ -187,7 +187,8 @@ export function Top({ newsPosts }: TopProps) {
       video.controls = false;
       video.setAttribute("muted", "");
       video.setAttribute("playsinline", "");
-      video.setAttribute("webkit-playsinline", "");
+      video.setAttribute("webkit-playsinline", "true");
+      video.setAttribute("x-webkit-airplay", "deny");
       video.removeAttribute("controls");
     };
 
@@ -196,14 +197,14 @@ export function Top({ newsPosts }: TopProps) {
     const tryPlay = () => {
       if (reducedMotion) return;
       prepareVideo();
-      const playAttempt = video.play();
-      if (playAttempt) {
-        void playAttempt
-          .then(() => revealVideo())
-          .catch(() => {
-            /* iOS：タップ前はポスターで見せ、操作後に再生 */
-          });
+      /* iOS：非表示だと autoplay が拒否されるので、動画は常時表示のまま play */
+      const attempt = video.play();
+      if (attempt) {
+        void attempt.then(markPlaying).catch(() => {
+          /* Low Power Mode 等ではジェスチャー待ち */
+        });
       }
+      if (!video.paused) markPlaying();
     };
 
     const onUserGesture = () => tryPlay();
@@ -214,42 +215,38 @@ export function Top({ newsPosts }: TopProps) {
 
     const onLoaded = () => {
       setVideoLoadReady(true);
-      /* 最初のフレームをデコードさせて再生しやすくする */
-      try {
-        if (video.currentTime < 0.05) video.currentTime = 0.01;
-      } catch {
-        /* ignore */
-      }
       tryPlay();
     };
 
     tryPlay();
+    if (!video.paused) markPlaying();
 
-    if (!video.paused && video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-      revealVideo();
-    }
-
-    video.addEventListener("playing", revealVideo);
-    video.addEventListener("loadeddata", onLoaded, { once: true });
-    video.addEventListener("canplay", tryPlay, { once: true });
+    video.addEventListener("playing", markPlaying);
+    video.addEventListener("loadeddata", onLoaded);
+    video.addEventListener("canplay", tryPlay);
+    video.addEventListener("canplaythrough", tryPlay);
 
     document.addEventListener("visibilitychange", onVisibility);
     window.addEventListener("pageshow", tryPlay);
-    /* touchstart は intro 中の touchmove ブロックより先に届く */
-    document.addEventListener("touchstart", onUserGesture, {
-      passive: true,
-      once: false,
-    });
+    document.addEventListener("touchstart", onUserGesture, { passive: true });
+    document.addEventListener("touchend", onUserGesture, { passive: true });
     document.addEventListener("click", onUserGesture, { passive: true });
 
+    const retryTimers = [200, 600, 1200, 2400].map((ms) =>
+      window.setTimeout(tryPlay, ms),
+    );
+
     return () => {
-      video.removeEventListener("playing", revealVideo);
+      video.removeEventListener("playing", markPlaying);
       video.removeEventListener("loadeddata", onLoaded);
       video.removeEventListener("canplay", tryPlay);
+      video.removeEventListener("canplaythrough", tryPlay);
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("pageshow", tryPlay);
       document.removeEventListener("touchstart", onUserGesture);
+      document.removeEventListener("touchend", onUserGesture);
       document.removeEventListener("click", onUserGesture);
+      retryTimers.forEach((id) => window.clearTimeout(id));
     };
   }, [reducedMotion]);
 
@@ -260,7 +257,7 @@ export function Top({ newsPosts }: TopProps) {
     if (!video) return;
     video.muted = true;
     video.volume = 0;
-    void video.play().then(() => setBgVideoVisible(true)).catch(() => {});
+    void video.play().then(() => setVideoPlaying(true)).catch(() => {});
   }, [introUnlocked, reducedMotion]);
 
   /* ローディングが消えた直後も再生を再試行 */
@@ -270,7 +267,7 @@ export function Top({ newsPosts }: TopProps) {
     if (!video) return;
     video.muted = true;
     video.volume = 0;
-    void video.play().then(() => setBgVideoVisible(true)).catch(() => {});
+    void video.play().then(() => setVideoPlaying(true)).catch(() => {});
   }, [introGate, reducedMotion]);
 
   /* ローディング終了ゲート後にイントロ開始（hiding→done でタイマーが消えない） */
@@ -560,24 +557,9 @@ export function Top({ newsPosts }: TopProps) {
         aria-label="イントロダクション"
       >
         <div className={styles.stickyVisual}>
-          <img
-            src="/top_wind_poster.jpg"
-            alt=""
-            width={1600}
-            height={900}
-            decoding="async"
-            fetchPriority="high"
-            className={styles.bgPoster}
-            aria-hidden="true"
-          />
           <video
             ref={videoRef}
-            className={[
-              styles.bgVideo,
-              bgVideoVisible ? styles.bgVideoVisible : "",
-            ]
-              .filter(Boolean)
-              .join(" ")}
+            className={styles.bgVideo}
             poster="/top_wind_poster.jpg"
             autoPlay
             muted
@@ -591,6 +573,21 @@ export function Top({ newsPosts }: TopProps) {
           >
             <source src="/top_wind.mp4" type="video/mp4" />
           </video>
+          <img
+            src="/top_wind_poster.jpg"
+            alt=""
+            width={1600}
+            height={900}
+            decoding="async"
+            fetchPriority="high"
+            className={[
+              styles.bgPoster,
+              videoPlaying ? styles.bgPosterHidden : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+            aria-hidden="true"
+          />
         </div>
 
         <div className={styles.scrollContent}>
