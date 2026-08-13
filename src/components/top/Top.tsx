@@ -103,6 +103,8 @@ export function Top({ newsPosts }: TopProps) {
   const [loaderPhase, setLoaderPhase] = useState<
     "visible" | "hiding" | "done"
   >("visible");
+  /** ローディング終了後にイントロを一度だけ開始するゲート */
+  const [introGate, setIntroGate] = useState(false);
 
   useEffect(() => {
     if (reducedMotion) setLoaderPhase("done");
@@ -116,23 +118,23 @@ export function Top({ newsPosts }: TopProps) {
     };
   }, [loaderPhase]);
 
-  /* 動画準備と最低表示時間のあと、ローディングをフェードアウト */
+  /* 動画準備と最低表示時間のあと、ローディングをフェードアウト開始 */
   useEffect(() => {
     if (reducedMotion || loaderPhase !== "visible") return;
 
     const revisit = hasSeenTopIntro();
     const minMs = revisit ? 650 : 1300;
     const start = Date.now();
-    let hideTimer = 0;
+    let finished = false;
 
     const hide = () => {
+      if (finished) return;
+      finished = true;
       setLoaderPhase("hiding");
-      hideTimer = window.setTimeout(() => setLoaderPhase("done"), 900);
     };
 
-    const ready = bgVideoVisible || videoLoadReady;
-
     const tick = () => {
+      const ready = bgVideoVisible || videoLoadReady;
       if (Date.now() - start >= minMs && ready) hide();
     };
 
@@ -143,9 +145,22 @@ export function Top({ newsPosts }: TopProps) {
     return () => {
       window.clearInterval(interval);
       window.clearTimeout(maxTimer);
-      window.clearTimeout(hideTimer);
     };
   }, [reducedMotion, loaderPhase, bgVideoVisible, videoLoadReady]);
+
+  /* hiding → done は別 effect（cleanup でタイマーが消えないようにする） */
+  useEffect(() => {
+    if (loaderPhase !== "hiding") return;
+    const hideTimer = window.setTimeout(() => setLoaderPhase("done"), 900);
+    return () => window.clearTimeout(hideTimer);
+  }, [loaderPhase]);
+
+  /* フェード開始〜完了でイントロゲートを開ける（一度きり） */
+  useEffect(() => {
+    if (loaderPhase === "hiding" || loaderPhase === "done") {
+      setIntroGate(true);
+    }
+  }, [loaderPhase]);
 
   useEffect(() => {
     introUnlockedRef.current = introUnlocked;
@@ -214,6 +229,7 @@ export function Top({ newsPosts }: TopProps) {
 
     return () => {
       video.removeEventListener("playing", revealVideo);
+      video.removeEventListener("loadeddata", onLoaded);
       video.removeEventListener("loadeddata", tryPlay);
       video.removeEventListener("canplay", tryPlay);
       document.removeEventListener("visibilitychange", onVisibility);
@@ -231,8 +247,9 @@ export function Top({ newsPosts }: TopProps) {
     void video.play().catch(() => {});
   }, [introUnlocked, reducedMotion]);
 
+  /* ローディング終了ゲート後にイントロ開始（hiding→done でタイマーが消えない） */
   useEffect(() => {
-    if (loaderPhase !== "done") return;
+    if (!introGate) return;
 
     const skipIntro = () => {
       setRunIntro(false);
@@ -260,6 +277,7 @@ export function Top({ newsPosts }: TopProps) {
     setHeaderVisible(false);
     setScrollHintVisible(false);
     setConceptVisible(false);
+    setHeroVisible(false);
     setIntroUnlocked(false);
     introUnlockedRef.current = false;
 
@@ -275,7 +293,7 @@ export function Top({ newsPosts }: TopProps) {
       }, INTRO_UNLOCK_MS),
     ];
     return () => timers.forEach((id) => window.clearTimeout(id));
-  }, [reducedMotion, loaderPhase]);
+  }, [reducedMotion, introGate]);
 
   /* 初回ロードのイントロ中だけ、コンセプト表示完了までスクロールを抑止 */
   useEffect(() => {
