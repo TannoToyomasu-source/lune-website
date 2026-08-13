@@ -8,7 +8,7 @@ type TopLoadingScreenProps = {
 };
 
 /**
- * TOP 初回表示：ミントの月光で、動画準備までの間をやわらかく見せる
+ * TOP 初回表示：ミントの月光と金色の月軌道で、動画準備までの間をやわらかく見せる
  */
 export function TopLoadingScreen({
   phase,
@@ -27,8 +27,10 @@ export function TopLoadingScreen({
       aria-busy={phase === "visible"}
       aria-label="読み込み中"
     >
+      <div className={styles.veil} aria-hidden="true" />
       <div className={styles.inner}>
         <div className={styles.loader} aria-hidden="true">
+          <span className={styles.halo} />
           <BreathingMoon
             phase="full"
             reducedMotion={reducedMotion}
@@ -36,12 +38,14 @@ export function TopLoadingScreen({
           />
           <span
             className={[
-              styles.moonSpinner,
-              reducedMotion ? styles.moonSpinnerStill : "",
+              styles.orbit,
+              reducedMotion ? styles.orbitStill : "",
             ]
               .filter(Boolean)
               .join(" ")}
-          />
+          >
+            <span className={styles.crescent} />
+          </span>
         </div>
       </div>
     </div>
