@@ -23,12 +23,23 @@
   background: color-mix(in srgb, var(--color-mint) 28%, #d5ddd9);
 }
 
-/* 再生前の下地（iOS の再生ボタンが見えないよう動画の下に常時表示） */
-.bgVideoPlaceholder {
+/* 再生前でも動画と同じ画を見せる（iOS autoplay 待ちの無地対策） */
+.bgPoster {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: color-mix(in srgb, var(--color-mint) 28%, #d5ddd9);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (max-width: 899px) {
+  .bgPoster {
+    object-position: 78% center;
+  }
 }
 
 .bgVideo {
@@ -39,7 +50,7 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  background: color-mix(in srgb, var(--color-mint) 28%, #d5ddd9);
+  background: transparent;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
