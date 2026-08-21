@@ -8,7 +8,8 @@ import {
 } from "./fonts";
 import "./globals.css";
 
-const siteDescription = `${BRAND_NAME}。女性のライフステージに寄り添う整体サロン。`;
+const siteDescription =
+  "Lune 東川口 浦和美園 - For Every Woman -\n女性のライフステージに寄り添う整体サロン。";
 
 /** OGP 用の絶対URL。独自ドメイン未設定時は Vercel の本番URLを使う */
 function getSiteUrl() {
