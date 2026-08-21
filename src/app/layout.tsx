@@ -33,6 +33,9 @@ export const metadata: Metadata = {
     template: `%s | ${BRAND_NAME}`,
   },
   description: siteDescription,
+  verification: {
+    google: "5RS1IZKIcyvX3YzguBIjW4YYmYbkZfM2aMwy624oTog",
+  },
   openGraph: {
     title: BRAND_NAME,
     description: siteDescription,
